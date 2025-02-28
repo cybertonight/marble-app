@@ -1,6 +1,4 @@
 import streamlit as st
-import numpy as np
-import pandas as pd
 
 st.set_page_config(
     page_title = "CYBERCESOIR.FR",
@@ -13,6 +11,9 @@ with st.container():
     st.title("C'est Marc.")
     st.write("Le youtubeur multigaming.")
     st.write("Hop là.")
+
+import numpy as np
+import pandas as pd
 
 # Interface Streamlit
 st.title("Simulation de course de billes")
@@ -69,23 +70,11 @@ for i in range(num_billes):
         st.session_state.Liste_billes[i] = st.text_input(f"Bille {i+1}", st.session_state.Liste_billes[i], key=f"bille_{i}")
         st.session_state.verrouillage_billes[i] = st.checkbox("Verrouiller", st.session_state.verrouillage_billes[i], key=f"lock_{i}")
 
-# Fonction pour ajouter l'emoji du drapeau en fonction de la ligue
-def obtenir_emoji_drapeau(league):
-    ligues_drapeaux = {
-        "LIGA": "🇪🇸",
-        "LIGUE 1": "🇫🇷",
-        "SFERA SERIE A": "🇮🇹",
-        "MEISTRILIIGA": "🇪🇪",
-        "BLACKPINK K LEAGUE": "🇰🇷"
-    }
-    return ligues_drapeaux.get(league, "🏳️")
-
 def simuler_course():
     Bilan = pd.DataFrame()
     Bilan["Bille"] = st.session_state.Liste_billes[:num_billes]
     Bilan["Statut"] = "OK"
     Bilan["Total"] = 0
-    Bilan["Pays"] = [""] * num_billes  # Pour les pays (avec emoji)
     
     # Paramètres de la course
     temps_borne_min = 25
@@ -117,29 +106,20 @@ def simuler_course():
         Bilan["Total"] += lis_tro
         Bilan = Bilan.sort_values("Total")
     
-    # Ajout des emojis de drapeau pour chaque bille selon sa ligue
-    for i in range(num_billes):
-        ligue = None
-        if i < 4: ligue = "LIGA"
-        elif i < 8: ligue = "LIGUE 1"
-        elif i < 12: ligue = "SFERA SERIE A"
-        elif i < 14: ligue = "MEISTRILIIGA"
-        else: ligue = "BLACKPINK K LEAGUE"
-        
-        Bilan.at[i, "Pays"] = obtenir_emoji_drapeau(ligue)
+    # Résultats
+    result_text = ""
+    rang = 0
+    best_time = Bilan.iloc[rang]["Total"]
+    result_text += (f"{rang+1}. {Bilan.iloc[rang]['Bille']} | "
+                    f"{Bilan.iloc[rang]['Total']:.2f}".replace(".", "''") + "\n").replace("+nan", "DNF")
+    
+    for rang in range(1, len(Bilan["Bille"])):
+        result_text += (f"{rang+1}. {Bilan.iloc[rang]['Bille']} | +"
+                        f"{(Bilan.iloc[rang]['Total'] - best_time):.2f}".replace(".", "''") + "\n").replace("+nan", "DNF")
+    
+    return result_text
 
-    # Résultats sous forme de tableau
-    Bilan["Position"] = Bilan["Total"].rank(method="min", ascending=True)
-    Bilan["Temps Total"] = Bilan["Total"].apply(lambda x: f"{x:.2f}".replace(".", "''"))
-    
-    # Réorganiser les colonnes
-    Bilan = Bilan[["Position", "Bille", "Pays", "Temps Total"]]
-    
-    # Affichage du tableau avec le style souhaité
-    st.dataframe(Bilan.style.set_table_styles(
-        [{'selector': 'thead th', 'props': [('text-align', 'center'), ('font-size', '20px')]},  # En-tête centré
-         {'selector': 'tbody td', 'props': [('text-align', 'center'), ('font-size', '18px')]}],  # Corps centré
-        hide_index=True))  # Masquer la colonne index
+
 
 if st.button("Lancer la course"):
     result = simuler_course()
