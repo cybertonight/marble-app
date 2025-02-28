@@ -106,19 +106,8 @@ def simuler_course():
         Bilan["Total"] += lis_tro
         Bilan = Bilan.sort_values("Total")
     
-    # Résultats
-    result_text = ""
-    rang = 0
-    best_time = Bilan.iloc[rang]["Total"]
-    result_text += (f"{rang+1}. {Bilan.iloc[rang]['Bille']} | "
-                    f"{Bilan.iloc[rang]['Total']:.2f}".replace(".", "''") + "\n").replace("+nan", "DNF")
-    
-    for rang in range(1, len(Bilan["Bille"])):
-        result_text += (f"{rang+1}. {Bilan.iloc[rang]['Bille']} | +"
-                        f"{(Bilan.iloc[rang]['Total'] - best_time):.2f}".replace(".", "''") + "\n").replace("+nan", "DNF")
-    
-    return result_text
+    return Bilan
 
 if st.button("Lancer la course"):
     result = simuler_course()
-    st.text_area("Résultats de la course", result, height=300)
+    st.dataframe(result)
