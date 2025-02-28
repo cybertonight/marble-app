@@ -41,7 +41,7 @@ for i, (label, league) in enumerate(zip(labels, leagues)):
         if st.button(label):
             st.session_state.Liste_billes[:num_billes] = league[:num_billes]
 
-# Saisie des noms des billes sous forme de colonnes avec verrouillage intégré
+# Saisie des noms des billes sous forme de colonnes compactes
 cols = st.columns(4)
 for i in range(num_billes):
     with cols[i % 4]:
@@ -82,4 +82,9 @@ def simuler_course():
 
 if st.button("Lancer la course"):
     result = simuler_course()
-    st.dataframe(result.style.set_table_attributes("style='margin-left: auto; margin-right: auto; width: 80%;'"))
+    st.markdown("""
+    <style>
+        .dataframe { margin-left: auto; margin-right: auto; width: 80%; }
+    </style>
+    """, unsafe_allow_html=True)
+    st.dataframe(result)
