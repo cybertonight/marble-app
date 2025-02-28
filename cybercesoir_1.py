@@ -9,7 +9,7 @@ st.set_page_config(
 with st.container():
     st.subheader("Salut.")
     st.title("C'est Marc.")
-    st.write("Le youtubeur multigaming.")
+    st.write("Je suis le meilleur youtubeur multigaming. T'as pas de vie mec ! Arrête de mettre des messages de merde sur mes vidéos !")
     st.write("Hop là.")
 
 import numpy as np
