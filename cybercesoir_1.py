@@ -117,10 +117,9 @@ def simuler_course():
         result_text += (f"{rang+1}. {Bilan.iloc[rang]['Bille']} | +"
                         f"{(Bilan.iloc[rang]['Total'] - best_time):.2f}".replace(".", "''") + "\n").replace("+nan", "DNF")
     
-    return result_text
-
-
+    return Bilan, result_text
 
 if st.button("Lancer la course"):
     result = simuler_course()
     st.text_area("Résultats de la course", result, height=300)
+    st.table(Bilan)
