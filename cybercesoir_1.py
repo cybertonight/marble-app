@@ -120,6 +120,6 @@ def simuler_course():
     return Bilan, result_text
 
 if st.button("Lancer la course"):
-    result = simuler_course()
-    st.text_area("Résultats de la course", result, height=300)
-    st.table(Bilan)
+    resultat_df, resultat_text = simuler_course()
+    st.table(resultat_df)  # Affiche le DataFrame sous forme de tableau
+    st.text_area("Résultats de la course (texte)", resultat_text, height=300)  # Affiche le texte
