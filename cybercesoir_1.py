@@ -15,15 +15,6 @@ with st.container():
 import numpy as np
 import pandas as pd
 
-# Dictionnaire associant chaque ligue à son emoji drapeau
-league_flags = {
-    "LIGA": "🇪🇸",
-    "LIGUE 1": "🇫🇷",
-    "SFERA SERIE A": "🇮🇹",
-    "MEISTRILIIGA": "🇪🇪",
-    "BLACKPINK K LEAGUE": "🇰🇷"
-}
-
 # Interface Streamlit
 st.title("Simulation de course de billes")
 
@@ -114,20 +105,6 @@ def simuler_course():
         Bilan[f'Tronçon_{i+1}'] = lis_tro
         Bilan["Total"] += lis_tro
         Bilan = Bilan.sort_values("Total")
-
-    # Récupération de l'emoji associé à la ligue sélectionnée
-    league = st.session_state.get("current_league", None)
-    if league is None:
-        league = "LIGA"  # valeur par défaut
-    flag = league_flags.get(league, "")
-
-    # Création du tableau final avec Position, Nom, Emoji et Temps total
-    ranking = pd.DataFrame({
-        "Position": range(1, len(Bilan) + 1),
-        "Nom": Bilan["Bille"],
-        "Emoji": flag,
-        "Temps total": Bilan["Total"]
-    })
     
     # Résultats
     result_text = ""
@@ -140,9 +117,8 @@ def simuler_course():
         result_text += (f"{rang+1}. {Bilan.iloc[rang]['Bille']} | +"
                         f"{(Bilan.iloc[rang]['Total'] - best_time):.2f}".replace(".", "''") + "\n").replace("+nan", "DNF")
     
-    return ranking, result_text
+    return result_text
 
 if st.button("Lancer la course"):
-    ranking_df, result_text = simuler_course()
-    st.table(ranking_df)  # Affichage du tableau avec position, nom, emoji et temps total
-    st.text_area("Résultats de la course (texte)", result_text, height=300)
+    result = simuler_course()
+    st.text_area("Résultats de la course", result, height=300)
