@@ -117,6 +117,8 @@ def simuler_course():
 
     # Récupération de l'emoji associé à la ligue sélectionnée
     league = st.session_state.get("current_league", None)
+    if league is None:
+        league = "LIGA"  # valeur par défaut
     flag = league_flags.get(league, "")
 
     # Création du tableau final avec Position, Nom, Emoji et Temps total
