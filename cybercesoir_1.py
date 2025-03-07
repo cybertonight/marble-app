@@ -7,9 +7,8 @@ st.set_page_config(
 
 #HEADER
 with st.container():
-    st.subheader("Salut.")
-    st.title("C'est Marc.")
-    st.write("Je suis le meilleur youtubeur multigaming. T'as pas de vie mec ! Arrête de mettre des messages de merde sur mes vidéos !")
+    st.subheader("Ce site simule des courses de billes.")
+    st.title("Toute ressemblance avec une course de voiture serait purement fortuite.")
     st.write("Hop là.")
 
 import numpy as np
