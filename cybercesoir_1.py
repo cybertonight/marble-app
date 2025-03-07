@@ -8,7 +8,7 @@ st.set_page_config(
 #HEADER
 with st.container():
     st.subheader("Ce site simule des courses de billes.")
-    st.title("Toute ressemblance avec une course de voiture serait purement fortuite.")
+    st.title("Toute ressemblance avec une course de voitures serait purement fortuite.")
     st.write("Hop là.")
 
 import numpy as np
